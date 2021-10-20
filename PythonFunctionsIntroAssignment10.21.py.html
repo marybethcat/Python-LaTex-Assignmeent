@@ -1,0 +1,79 @@
+#!/usr/bin/env python
+# coding: utf-8
+
+# In[15]:
+
+
+import numpy as np 
+#Rule #1: If Q = cA where c is a constant (or a quantity with negligible uncertainty), then δQ = |c|δA
+def rule1(c, da):
+    dQ = (c*da)
+    return dQ
+d1 = .3
+c1 = 3
+err = rule1(c1,d1)
+print ("Error for rule 1 is", err)
+
+#Rule 2: If Q = cA^m where c and m are constants, then δQ = |cmA^(m−1)|δA
+def rule2(c, A, m, da):
+    dQ = (c*m*A**(m-1)*da)
+    return dQ 
+c1 = 3
+A1 = 2
+m1 = -1
+d1 = .3
+
+err2 = rule2(c1, A1, m1, d1)
+print ("Error for rule 2 is", err2) 
+
+#Rule 3: If Q=A+B or Q=A−B,then δQ = sqrt[(δA)^2 + (δB)^2]
+def rule3(da, db):
+    dQ = np.sqrt(da**2+db**2)
+    return dQ
+d1 = 1.0
+d2 = 0.3 
+errd1 = .0005
+errd2 = .0005
+dtotal = d1 + d2
+errdtotal = rule3(errd1,errd2)
+print("Error for rule 3 is", errdtotal)
+
+#Rule 4: Q = cA^mB^n where c, m, and n are constants
+def rule4(Q, A, m, da, B, n, db):
+    dQ = (Q*np.sqrt(((m*da)/A)**2 + ((n*db)/B)**2))
+    return dQ
+g = 9.8
+x = 1.6292
+m = 1
+y = .991
+n = -.5
+dx = .0057
+dy = .0005
+v = x*np.sqrt(.5*g/y)
+
+dv = rule4(v, x, m, dx, y, n, dy)
+
+print("Error for rule 4 is", dv)
+
+#Using Python for Calculations
+#For the following dataset, calculate the mean (average) and the error in the mean using the numpy functions of np.std() for standard deviation and np.average(). x = 1.1, 1.3, 1.4, 0.9, 0.95, 1.05
+#Write out your results in a sentence.
+x = np.array([1.1, 1.3, 1.4, 0.9, 0.95, 1.05])
+xmean = np.average(x)
+xstdev = np.std(x)
+error = xstdev/np.sqrt(len(x)) 
+
+print("The mean of the data set is", xmean, ", and the error in the mean is", error, ".") 
+
+
+# $\delta q = \sqrt{\delta a^2 + \delta b^2} $
+# 
+
+# $\delta v_i = v_i \sqrt{\frac{1*\delta x}{x}^2 + \frac{.5*\delta y}{y}^2} $ 
+# 
+
+# In[ ]:
+
+
+
+
